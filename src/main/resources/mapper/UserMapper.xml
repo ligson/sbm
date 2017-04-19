@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 用户表  -->
+<mapper namespace="UserEntityMapper">
+
+    <sql id="paginationPrefix">
+        SELECT * FROM (
+    </sql>
+
+    <sql id="paginationSuffix">
+        )A LIMIT #{offset,jdbcType=DECIMAL},#{max,jdbcType=DECIMAL}
+    </sql>
+
+    <!--通用表字段列表-->
+    <resultMap id="BaseResultMap"
+               type="org.ligson.sbm.domain.UserEntity">
+        <result column="id" property="id"
+                jdbcType="VARCHAR"/>
+        <result column="name" property="name"
+                jdbcType="VARCHAR"/>
+        <result column="password" property="password"
+                jdbcType="VARCHAR"/>
+        <result column="sex" property="sex"
+                jdbcType="TINYINT"/>
+        <result column="createDate" property="createDate"
+                jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <!--通用表字段列表-->
+
+    <!--通用查询条件组装-->
+    <sql id="whereCondition">
+        <if test="id != null">
+            AND id=#{id,jdbcType=VARCHAR}
+        </if>
+        <if test="name != null">
+            AND name=#{name,jdbcType=VARCHAR}
+        </if>
+        <if test="password != null">
+            AND password=#{password,jdbcType=VARCHAR}
+        </if>
+        <if test="sex != null">
+            AND sex=#{sex,jdbcType=TINYINT}
+        </if>
+        <if test="createDate != null">
+            AND createDate=#{createDate,jdbcType=TIMESTAMP}
+        </if>
+    </sql>
+
+    <!--查询字段列表拼装-->
+    <sql id="baseColumnList">
+        id,
+        name,
+        password,
+        sex,
+        createDate
+    </sql>
+
+    <!--
+    方法名称: insert
+    调用路径: UserEntityMapper.insert
+    开发信息:
+    处理信息: 保存记录
+    -->
+    <insert id="insert"
+            parameterType="org.ligson.sbm.domain.UserEntity">
+        INSERT INTO t_user2
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="createDate != null">
+                createDate,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                #{sex,jdbcType=TINYINT},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <!--
+    方法名称: update
+    调用路径: UserEntityMapper.update
+    开发信息:
+    处理信息: 修改记录
+    -->
+    <update id="update"
+            parameterType="org.ligson.sbm.domain.UserEntity">
+        UPDATE t_user2
+        <set>
+            <if test="id != null">
+                id = #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                sex = #{sex,jdbcType=TINYINT},
+            </if>
+            <if test="createDate != null">
+                createDate = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        WHERE 1=1
+        <include refid="whereCondition"/>
+    </update>
+
+    <!--
+    方法名称: updateBak
+    调用路径: UserEntityMapper.updateBak
+    开发信息:
+    处理信息: 修改记录
+    -->
+    <update id="updateBak"
+            parameterType="org.ligson.sbm.domain.UserEntity">
+        UPDATE t_user2
+        <set>
+            id = #{id,jdbcType=VARCHAR},
+            name = #{name,jdbcType=VARCHAR},
+            password = #{password,jdbcType=VARCHAR},
+            sex = #{sex,jdbcType=TINYINT},
+            createDate = #{createDate,jdbcType=TIMESTAMP},
+        </set>
+        WHERE 1=1
+        <include refid="whereCondition"/>
+    </update>
+
+    <!--
+    方法名称: delete
+    调用路径:UserEntityMapper.delete
+    开发信息:
+    处理信息: 删除记录
+    -->
+    <delete id="delete"
+            parameterType="org.ligson.sbm.domain.UserEntity">
+        DELETE FROM t_user2
+        WHERE 1=1
+        <include refid="whereCondition"/>
+    </delete>
+
+    <!--
+    方法名称: findBy
+    调用路径: UserEntityMapper.findBy
+    开发信息:
+    处理信息: 根据主键查询记录
+    -->
+    <select id="findBy"
+            parameterType="org.ligson.sbm.domain.UserEntity"
+            resultType="org.ligson.sbm.domain.UserEntity">
+        SELECT
+        <include refid="baseColumnList"/>
+        FROM t_user2
+        WHERE 1=1
+        <include refid="whereCondition"/>
+    </select>
+
+    <!--
+    方法名称: countBy
+    调用路径: UserEntityMapper.countBy
+    开发信息:
+    处理信息: 根据主键统计记录
+    -->
+    <select id="countBy"
+            parameterType="org.ligson.sbm.domain.UserEntity"
+            resultType="java.lang.Integer">
+        SELECT
+        count(1)
+        FROM t_user2
+        WHERE 1=1
+        <include refid="whereCondition"/>
+    </select>
+
+    <!--
+    方法名称: getPaginationList
+    调用路径: UserEntityMapper.getPaginationList
+    开发信息:
+    处理信息: 分页查询记录
+    -->
+    <select id="getPagenationList"
+            parameterType="org.ligson.sbm.domain.UserEntity"
+            resultType="org.ligson.sbm.domain.UserEntity">
+        <!-- 分页条 -->
+        <include refid="CommonEntity.paginationPrefix"/>
+        SELECT
+        <include refid="baseColumnList"/>
+        FROM t_user2
+        WHERE 1=1
+        <include refid="whereCondition"/>
+        <if test="sort != null and order != null">
+            ORDER BY ${sort} ${order}
+        </if>
+        <!-- 分页条 -->
+        <include refid="CommonEntity.paginationSuffix"/>
+    </select>
+
+    <!--
+    方法名称: getPaginationList-count
+    调用路径: UserEntityMapper.getPaginationList-count
+    开发信息:
+    处理信息: 查询记录数
+    -->
+    <select id="getPagenationList-count"
+            parameterType="org.ligson.sbm.domain.UserEntity"
+            resultType="int">
+        SELECT count(1) FROM t_user2
+        WHERE 1=1
+        <include refid="whereCondition"/>
+    </select>
+
+    <!--
+    方法名称: getList
+    调用路径: UserEntityMapper.getList`
+    开发信息:
+    处理信息: 根据条件查询记录
+    -->
+    <select id="getList"
+            parameterType="org.ligson.sbm.domain.UserEntity"
+            resultType="org.ligson.sbm.domain.UserEntity">
+        SELECT
+        <include refid="baseColumnList"/>
+        FROM t_user2
+        WHERE 1=1
+        <include refid="whereCondition"/>
+        <if test="sort != null and order != null">
+            ORDER BY ${sort} ${order}
+        </if>
+        limit 0,100
+    </select>
+
+    <!--用户自定义代码开始-->
+
+    <!--用户自定义代码结束-->
+</mapper>

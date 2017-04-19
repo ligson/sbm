@@ -1,0 +1,5 @@
+//rootProject.name = 'callcenter'
+//include "cc_service"
+//include "cc_api"
+rootProject.name = 'sbm'
+
