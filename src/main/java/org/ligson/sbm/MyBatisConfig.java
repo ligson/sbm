@@ -5,6 +5,7 @@ import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -20,6 +21,7 @@ import javax.sql.DataSource;
  * Created by ligson on 2017/4/19.
  */
 @Configuration
+@AutoConfigureAfter(DataSourceConfiguration.class)
 @EnableTransactionManagement
 public class MyBatisConfig implements TransactionManagementConfigurer {
     @Autowired
