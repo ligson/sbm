@@ -1,12 +1,13 @@
 package org.ligson.sbm.domain;
 
-import java.io.Serializable;
+import org.ligson.sbm.core.entity.BasicEntity;
+
 import java.util.Date;
 
 /**
  * Created by ligson on 2017/4/19.
  */
-public class UserEntity implements Serializable {
+public class UserEntity extends BasicEntity {
     private String id;
     private Date createDate;
     private String name;
@@ -51,5 +52,15 @@ public class UserEntity implements Serializable {
 
     public void setSex(Boolean sex) {
         this.sex = sex;
+    }
+
+    @Override
+    public String primaryKey() {
+        return "id";
+    }
+
+    @Override
+    public Class primaryKeyType() {
+        return String.class;
     }
 }

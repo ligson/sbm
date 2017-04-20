@@ -4,14 +4,6 @@
 <!-- 用户表  -->
 <mapper namespace="UserEntityMapper">
 
-    <sql id="paginationPrefix">
-        SELECT * FROM (
-    </sql>
-
-    <sql id="paginationSuffix">
-        )A LIMIT #{offset,jdbcType=DECIMAL},#{max,jdbcType=DECIMAL}
-    </sql>
-
     <!--通用表字段列表-->
     <resultMap id="BaseResultMap"
                type="org.ligson.sbm.domain.UserEntity">
@@ -64,6 +56,9 @@
     -->
     <insert id="insert"
             parameterType="org.ligson.sbm.domain.UserEntity">
+        <selectKey keyProperty="id" resultType="String" order="BEFORE">
+            SELECT UUID()
+        </selectKey>
         INSERT INTO t_user2
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -78,9 +73,7 @@
             <if test="sex != null">
                 sex,
             </if>
-            <if test="createDate != null">
-                createDate,
-            </if>
+            createDate,
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -95,9 +88,7 @@
             <if test="sex != null">
                 #{sex,jdbcType=TINYINT},
             </if>
-            <if test="createDate != null">
-                #{createDate,jdbcType=TIMESTAMP},
-            </if>
+            now()
         </trim>
     </insert>
 
@@ -202,7 +193,7 @@
     开发信息:
     处理信息: 分页查询记录
     -->
-    <select id="getPagenationList"
+    <select id="getPaginationList"
             parameterType="org.ligson.sbm.domain.UserEntity"
             resultType="org.ligson.sbm.domain.UserEntity">
         <!-- 分页条 -->
@@ -225,7 +216,7 @@
     开发信息:
     处理信息: 查询记录数
     -->
-    <select id="getPagenationList-count"
+    <select id="getPaginationList-count"
             parameterType="org.ligson.sbm.domain.UserEntity"
             resultType="int">
         SELECT count(1) FROM t_user2
