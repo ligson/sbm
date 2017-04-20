@@ -1,8 +1,12 @@
 package org.ligson.sbm.domain;
 
 import org.ligson.sbm.core.entity.BasicEntity;
+import org.ligson.sbm.core.entity.Constraint;
+import org.ligson.sbm.core.entity.NullableConstraint;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by ligson on 2017/4/19.
@@ -62,5 +66,13 @@ public class UserEntity extends BasicEntity {
     @Override
     public Class primaryKeyType() {
         return String.class;
+    }
+
+    @Override
+    public List<Constraint> constraints() {
+        List<Constraint> constraints = new ArrayList<>();
+        constraints.add(new NullableConstraint("name", false));
+        constraints.add(new NullableConstraint("password", false));
+        return constraints;
     }
 }

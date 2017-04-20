@@ -1,6 +1,13 @@
 package org.ligson.sbm.core.entity;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.springframework.util.ReflectionUtils;
+
+import java.lang.reflect.Field;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ligso on 2016/1/27.
@@ -25,6 +32,8 @@ public class BasicEntity extends BasePageDto {
      * 排序顺序
      */
     private String order = "ASC";
+
+    private List<ErrorField> errorFields = new ArrayList<>();
 
     public Boolean getPageAble() {
         return pageAble;
@@ -67,4 +76,36 @@ public class BasicEntity extends BasePageDto {
     public void setOrder(String order) {
         this.order = order;
     }
+
+
+    public List<Constraint> constraints() {
+        return null;
+    }
+
+    public boolean validate() {
+        errorFields.clear();
+        List<Constraint> constraints = constraints();
+        boolean validate = true;
+        if (CollectionUtils.isNotEmpty(constraints)) {
+            for (Constraint constraint : constraints) {
+                String fieldName = constraint.getFieldName();
+                Field field = ReflectionUtils.findField(this.getClass(), fieldName);
+                Object fieldValue = null;
+                try {
+                    fieldValue = FieldUtils.readDeclaredField(this, fieldName, true);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException("class " + this.getClass().getName() + " field " + fieldName + " not found");
+                }
+                if (!constraint.valid(this, fieldValue)) {
+                    validate = false;
+                    ErrorField errorField = new ErrorField();
+                    errorField.setField(field);
+                    errorField.setErrorMsg(constraint.errorTip());
+                    errorFields.add(errorField);
+                }
+            }
+        }
+        return validate;
+    }
+
 }
