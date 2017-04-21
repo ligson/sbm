@@ -1,5 +1,7 @@
 package org.ligson.sbm.core.entity;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.springframework.util.ReflectionUtils;
@@ -77,6 +79,13 @@ public class BasicEntity extends BasePageDto {
         this.order = order;
     }
 
+    public List<ErrorField> getErrorFields() {
+        return errorFields;
+    }
+
+    public void setErrorFields(List<ErrorField> errorFields) {
+        this.errorFields = errorFields;
+    }
 
     public List<Constraint> constraints() {
         return null;
@@ -108,4 +117,14 @@ public class BasicEntity extends BasePageDto {
         return validate;
     }
 
+    @Override
+    public String toString() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writer().writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

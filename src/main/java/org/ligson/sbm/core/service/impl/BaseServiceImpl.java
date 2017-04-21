@@ -4,6 +4,7 @@ package org.ligson.sbm.core.service.impl;
 import org.ligson.sbm.core.dao.BaseDao;
 import org.ligson.sbm.core.entity.BasicEntity;
 import org.ligson.sbm.core.entity.Pagination;
+import org.ligson.sbm.core.exception.EntityValidException;
 import org.ligson.sbm.core.service.BaseService;
 
 /**
@@ -38,12 +39,18 @@ public abstract class BaseServiceImpl<T extends BasicEntity> implements BaseServ
 
     @Override
     public void update(T t) {
-        getDao().update(t);
+        int n = getDao().update(t);
+        if (n < 0) {
+            throw new EntityValidException(t);
+        }
     }
 
     @Override
     public void add(T t) {
-        getDao().insert(t);
+        Integer integer = getDao().insert(t);
+        if (integer < 0) {
+            throw new EntityValidException(t);
+        }
     }
 
     @Override

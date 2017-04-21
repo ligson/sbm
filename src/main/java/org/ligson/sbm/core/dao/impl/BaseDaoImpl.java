@@ -50,6 +50,9 @@ public class BaseDaoImpl<E extends BasicEntity> implements BaseDao<E> {
      */
     @Override
     public Integer update(E e) {
+        if (!e.validate()) {
+            return -1;
+        }
         String statementName = e.getClass().getSimpleName() +
                 updateSuffix;
         return userSqlSessionTemplate.update(statementName, e);
@@ -76,7 +79,7 @@ public class BaseDaoImpl<E extends BasicEntity> implements BaseDao<E> {
      */
     @Override
     public Integer insert(E e) {
-        if(!e.validate()){
+        if (!e.validate()) {
             return -1;
         }
         String statementName = e.getClass().getSimpleName() +

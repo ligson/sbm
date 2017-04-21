@@ -60,5 +60,4 @@ public class BaseController {
         }
         return "forward:" + url;
     }
-
 }
