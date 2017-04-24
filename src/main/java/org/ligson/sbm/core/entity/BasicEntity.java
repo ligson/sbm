@@ -35,6 +35,11 @@ public class BasicEntity extends BasePageDto {
      */
     private String order = "ASC";
 
+    /***
+     * 保存和修改时是否校验
+     */
+    private boolean validate = true;
+
     private List<ErrorField> errorFields = new ArrayList<>();
 
     public Boolean getPageAble() {
@@ -85,6 +90,14 @@ public class BasicEntity extends BasePageDto {
 
     public void setErrorFields(List<ErrorField> errorFields) {
         this.errorFields = errorFields;
+    }
+
+    public boolean isValidate() {
+        return validate;
+    }
+
+    public void setValidate(boolean validate) {
+        this.validate = validate;
     }
 
     public List<Constraint> constraints() {
